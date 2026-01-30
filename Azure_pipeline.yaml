@@ -1,0 +1,38 @@
+trigger:
+  - main
+
+pool:
+  vmImage: 'windows-latest'
+
+steps:
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '18.x'
+    displayName: 'Install Node.js'
+
+  - script: npm install
+    displayName: 'Install Dependencies'
+
+  - script: npx playwright install chromium --with-deps
+    displayName: 'Install Playwright Browser'
+
+  # Run TypeScript Tests
+  - script: npm run test:ts
+    displayName: 'Run Playwright TS Tests'
+    env:
+      LT_USERNAME: $(LT_USERNAME)
+      LT_ACCESS_KEY: $(LT_ACCESS_KEY)
+
+  # Run JavaScript Test
+  - script: npm run test:js
+    displayName: 'Run Playwright JS Single Test'
+    env:
+      LT_USERNAME: $(LT_USERNAME)
+      LT_ACCESS_KEY: $(LT_ACCESS_KEY)
+
+  # Optional: Publish Results
+  - task: PublishTestResults@2
+    if: succeededOrFailed()
+    inputs:
+      testResultsFiles: '**/test-results/*.xml'
+      testRunTitle: 'Playwright Combined Results'

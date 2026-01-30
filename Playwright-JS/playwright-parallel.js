@@ -106,7 +106,8 @@ const capabilities = [
             'network': true,
             'video': true,
             'console': true,
-            'playwrightClientVersion': playwrightClientVersion
+            'playwrightClientVersion': playwrightClientVersion,
+            'goog:chromeOptions': ['--start-maximized']
         }
     },
     {
@@ -121,7 +122,8 @@ const capabilities = [
             'network': true,
             'video': true,
             'console': true,
-            'playwrightClientVersion': playwrightClientVersion
+            'playwrightClientVersion': playwrightClientVersion,
+            'goog:chromeOptions': ['--start-maximized']
         }
     },
     {
