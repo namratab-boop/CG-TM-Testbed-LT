@@ -1,17 +1,6 @@
 trigger:
   - main
 
-parameters:
-  - name: testSuite
-    displayName: 'Select Test Suite to Run'
-    type: string
-    default: 'All'
-    values:
-      - 'All'
-      - 'TypeScript'
-      - 'JS_Single'
-      - 'JS_Parallel'
-
 pool:
   vmImage: 'windows-latest'
 
@@ -27,10 +16,9 @@ steps:
   - script: npx playwright install chromium --with-deps
     displayName: 'Install Playwright Browser'
 
-  # 1. Run TypeScript Tests
+  # 1. Run TypeScript Tests 
   - script: npx playwright test --config=Playwright-TS/Playwright-TS/
     displayName: 'Run Playwright TS Tests'
-    condition: or(eq('${{ parameters.testSuite }}', 'TypeScript'), eq('${{ parameters.testSuite }}', 'All'))
     env:
       LT_USERNAME: $(LT_USERNAME)
       LT_ACCESS_KEY: $(LT_ACCESS_KEY)
@@ -38,7 +26,6 @@ steps:
   # 2. Run JavaScript Single Test
   - script: npm run test:js
     displayName: 'Run Playwright JS Single Test'
-    condition: or(eq('${{ parameters.testSuite }}', 'JS_Single'), eq('${{ parameters.testSuite }}', 'All'))
     env:
       LT_USERNAME: $(LT_USERNAME)
       LT_ACCESS_KEY: $(LT_ACCESS_KEY)
@@ -46,14 +33,13 @@ steps:
   # 3. Run JavaScript Parallel Tests
   - script: npm run test:js-parallel
     displayName: 'Run Playwright JS Parallel Tests'
-    condition: or(eq('${{ parameters.testSuite }}', 'JS_Parallel'), eq('${{ parameters.testSuite }}', 'All'))
     env:
       LT_USERNAME: $(LT_USERNAME)
       LT_ACCESS_KEY: $(LT_ACCESS_KEY)
 
   # Publish Results
   - task: PublishTestResults@2
-    condition: succeededOrFailed()
+    condition: succeededOrFailed() 
     inputs:
       testResultsFiles: '**/test-results/*.xml'
       testRunTitle: 'Playwright Combined Results'
