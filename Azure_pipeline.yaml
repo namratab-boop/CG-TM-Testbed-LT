@@ -16,23 +16,42 @@ steps:
   - script: npx playwright install chromium --with-deps
     displayName: 'Install Playwright Browser'
 
-  # Run TypeScript Tests
-  - script: npm run test:ts
+  # 1. Run Playwright Tests (TS & JS)
+  - script: npx playwright test --config=Playwright-TS/Playwright-TS/
     displayName: 'Run Playwright TS Tests'
     env:
       LT_USERNAME: $(LT_USERNAME)
       LT_ACCESS_KEY: $(LT_ACCESS_KEY)
 
-  # Run JavaScript Test
   - script: npm run test:js
     displayName: 'Run Playwright JS Single Test'
     env:
       LT_USERNAME: $(LT_USERNAME)
       LT_ACCESS_KEY: $(LT_ACCESS_KEY)
 
-  # Optional: Publish Results
+  # 2. PHASE 2: JMeter Performance Testing
+  # We use Chocolatey (pre-installed on Windows agents) to quickly install JMeter
+  - powershell: |
+      choco install jmeter -y
+      refreshenv
+    displayName: 'Install Apache JMeter'
+
+  - powershell: |
+      jmeter -n -t Performance-JMeter/performance.jmx -l results.jtl -e -o $(Build.BinariesDirectory)/perf-reports
+    displayName: 'Run JMeter Performance Test'
+    continueOnError: true 
+
+  # 3. PHASE 2: Publish Performance & Test Results
   - task: PublishTestResults@2
-    condition: succeededOrFailed() # Changed from 'if' to 'condition'
+    condition: succeededOrFailed() 
     inputs:
       testResultsFiles: '**/test-results/*.xml'
       testRunTitle: 'Playwright Combined Results'
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Performance Dashboard'
+    condition: succeededOrFailed()
+    inputs:
+      PathtoPublish: '$(Build.BinariesDirectory)/perf-reports'
+      ArtifactName: 'JMeter-Performance-Dashboard'
+      publishLocation: 'Container'

@@ -7,4 +7,14 @@ node_modules/
 # ignore all log files
 *.log
 .env
+# JMeter
+Performance-JMeter/performance-report/
+Performance-JMeter/reports/
+*.jtl
+bin/
 
+# Playwright
+test-results/
+playwright-report/
+blob-report/
+playwright/.local-browsers
