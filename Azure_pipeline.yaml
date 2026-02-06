@@ -6,11 +6,7 @@ pool:
 
 variables:
   API_GROUPS: 'smoke'
-  # It is highly recommended to store these in Azure DevOps Project Settings -> Variables
-  # or in the Library (Variable Groups) as 'Secret' variables.
-  LT_USERNAME: $(LT_USERNAME)
-  LT_ACCESS_KEY: $(LT_ACCESS_KEY)
-
+  
 steps:
   - task: NodeTool@0
     inputs:
