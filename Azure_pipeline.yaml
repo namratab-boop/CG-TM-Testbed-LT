@@ -49,6 +49,9 @@ steps:
       # Using --user and --key ensures variables are passed correctly from Azure secrets.
       ./hyperexecute.exe --user $(LT_USERNAME) --key $(LT_ACCESS_KEY) --config API-RestAssured-hyper/hyperexecute.yaml
     displayName: 'Run HyperExecute Hybrid Tests'
+    env:
+      LT_USERNAME: $(LT_USERNAME)
+      LT_ACCESS_KEY: $(LT_ACCESS_KEY)
 
   # 4. PHASE: JMETER PERFORMANCE TESTING
   - powershell: |
