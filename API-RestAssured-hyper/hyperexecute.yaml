@@ -24,7 +24,7 @@ pre:
 
 testDiscovery:
   type: raw
-  mode: remote
+  mode: dynamic
   # Corrected command to look specifically into your folder
   command: grep 'class name' src/test/java/web.xml | awk -F'"' '{print $2}'
 

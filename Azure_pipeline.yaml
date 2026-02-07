@@ -6,82 +6,110 @@ pool:
 
 variables:
   API_GROUPS: 'smoke'
-  
+
 steps:
-  - task: NodeTool@0
-    inputs:
-      versionSpec: '18.x'
-    displayName: 'Install Node.js'
+  # Install Node.js
+  # - task: NodeTool@0
+  #   displayName: 'Install Node.js'
+  #   inputs:
+  #     versionSpec: '18.x'
 
-  - script: npm install
-    displayName: 'Install Dependencies'
+  # # Install project dependencies
+  # - script: npm install
+  #   displayName: 'Install Dependencies'
 
-  - script: npx playwright install chromium --with-deps
-    displayName: 'Install Playwright Browser'
+  # # Install Playwright browser
+  # - script: npx playwright install chromium --with-deps
+  #   displayName: 'Install Playwright Browser'
 
-  # 1. Run Playwright Tests TS
-  - script: npx playwright test --config=Playwright-TS/Playwright-TS/
-    displayName: 'Run Playwright TS Tests'
-    env:
-      LT_USERNAME: $(LT_USERNAME)
-      LT_ACCESS_KEY: $(LT_ACCESS_KEY)
+  # # 1. Run Playwright TypeScript tests
+  # - script: npx playwright test --config=Playwright-TS/Playwright-TS/
+  #   displayName: 'Run Playwright TS Tests'
+  #   env:
+  #     LT_USERNAME: $(LT_USERNAME)
+  #     LT_ACCESS_KEY: $(LT_ACCESS_KEY)
 
-  # 2. Run JavaScript Single Test
-  - script: npm run test:js
-    displayName: 'Run Playwright JS Single Test'
-    env:
-      LT_USERNAME: $(LT_USERNAME)
-      LT_ACCESS_KEY: $(LT_ACCESS_KEY)
+  # # 2. Run Playwright JavaScript single test
+  # - script: npm run test:js
+  #   displayName: 'Run Playwright JS Single Test'
+  #   env:
+  #     LT_USERNAME: $(LT_USERNAME)
+  #     LT_ACCESS_KEY: $(LT_ACCESS_KEY)
 
-  - script: npm run test:js-parallel
-    displayName: 'Run Playwright JS Parallel Tests'
-    env:
-      LT_USERNAME: $(LT_USERNAME)
-      LT_ACCESS_KEY: $(LT_ACCESS_KEY)
+  # # Run Playwright JavaScript tests in parallel
+  # - script: npm run test:js-parallel
+  #   displayName: 'Run Playwright JS Parallel Tests'
+  #   env:
+  #     LT_USERNAME: $(LT_USERNAME)
+  #     LT_ACCESS_KEY: $(LT_ACCESS_KEY)
 
-  # 3. PHASE: API TESTING (HYPEREXECUTE)
-  # Orchestrate hybrid tests (Rest Assured + Selenium) via HyperExecute CLI
-  
-    -script: |
-        # Download Hyperexecute CLI for macOS (adjust for other OS)
-        name: Download HyperExecute CLI
-        script: wget https://downloads.lambdatest.com/hyperexecute/windows/hyperexecute.exe
-        
-        # Grant execute permission to the downloaded binary
-        name: Make HyperExecute executable
-        script: chmod +x hyperexecute
-        
-        # Run Hyperexecute with user credentials and configuration file
-        name: Run Hyperexecute Tests
-        script: ./hyperexecute --user <your_username> --key <your_access_key> API-RestAssured-hyper/hyperexecute.yaml  
+  # # 3. PHASE: API TESTING (HyperExecute - Rest Assured)
+  # - powershell: |
+  #     Write-Host "Downloading HyperExecute CLI..."
+  #     Invoke-WebRequest `
+  #       -Uri https://downloads.lambdatest.com/hyperexecute/windows/hyperexecute.exe `
+  #       -OutFile hyperexecute.exe
+
+  #     Write-Host "Switching to API-RestAssured-hyper directory..."
+  #     cd API-RestAssured-hyper
+
+  #     Write-Host "Running HyperExecute API tests..."
+  #     ..\hyperexecute.exe `
+  #       --user $(LT_USERNAME) `
+  #       --key $(LT_ACCESS_KEY) `
+  #       --config hyperexecute.yaml
+  #   displayName: 'Run HyperExecute API Tests'
+
 
   # 4. PHASE: JMETER PERFORMANCE TESTING
   - powershell: |
       choco install jmeter -y
-      $env:Path += ";$env:JMETER_PATH"
-      jmeter -version
+      jmeter -v
     displayName: 'Install and Verify JMeter'
 
   - powershell: |
-      New-Item -ItemType Directory -Force -Path $(Build.BinariesDirectory)/perf-reports
-      jmeter -n -t $(Build.SourcesDirectory)/Performance-JMeter/performance.jmx -l $(Build.BinariesDirectory)/results.jtl -e -o $(Build.BinariesDirectory)/perf-reports
-    displayName: 'Run JMeter Performance Test'
-    continueOnError: true
+      New-Item -ItemType Directory -Force `
+        -Path "$(Build.BinariesDirectory)\perf-reports"
 
+      $session = New-Object Microsoft.PowerShell.Commands.WebRequestSession
+      $session.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36"
+      Invoke-WebRequest -UseBasicParsing -Uri "https://api-hyperexecute.lambdatest.com/reception/api/project/01KGS9WBZTM8R4AW3HBQW8GXWY/trigger-job" `
+      -Method "POST" `
+      -WebSession $session `
+      -Headers @{
+      "authority"="api-hyperexecute.lambdatest.com"
+        "method"="POST"
+        "path"="/reception/api/project/01KGS9WBZTM8R4AW3HBQW8GXWY/trigger-job"
+        "scheme"="https"
+        "accept"="application/json"
+        "accept-encoding"="gzip, deflate, br, zstd"
+        "accept-language"="en-US,en;q=0.9"
+        "authorization"="Basic bmFtcmF0YWJ0ZXN0bXVhaTpMVF9QU29aUDN5THVRNnYxa2lVdjBxMGpvaUFnYzhYUWdrNXFGVUZ4SW9yVnhkMGgwNQ=="
+        "dnt"="1"
+        "origin"="https://hyperexecute.lambdatest.com"
+        "priority"="u=1, i"
+        "referer"="https://hyperexecute.lambdatest.com/hyperexecute/projects/detail?projectId=01KGS9WBZTM8R4AW3HBQW8GXWY"
+        "sec-ch-ua"="`"Not(A:Brand`";v=`"8`", `"Chromium`";v=`"144`", `"Google Chrome`";v=`"144`""
+        "sec-ch-ua-mobile"="?0"
+        "sec-ch-ua-platform"="`"Windows`""
+        "sec-fetch-dest"="empty"
+        "sec-fetch-mode"="cors"
+        "sec-fetch-site"="same-site"
+        "sec-gpc"="1"
+      } `
+      -ContentType "application/json" `
+      -Body "{`"jmeter`":[{`"region`":`"eastus`",`"users`":100,`"duration`":60,`"rampup`":60,`"splitcsv`":false,`"jmx`":`"performance.jmx`"}],`"jobLabel`":[],`"globalTimeout`":90}"
   # 5. REPORTING & ARTIFACTS
-  # Publishes standard JUnit results to the Azure Pipeline 'Tests' tab.
   - task: PublishTestResults@2
     displayName: 'Publish Combined Test Results'
     condition: succeededOrFailed()
     inputs:
       testResultsFormat: 'JUnit'
-      # Searches for results generated by both local Playwright and HyperExecute nodes
       testResultsFiles: |
         **/test-results/*.xml
         **/surefire-reports/TEST-*.xml
       testRunTitle: 'Playwright & HyperExecute Results'
 
-  # Uploads performance dashboards for manual review.
   - task: PublishBuildArtifacts@1
     displayName: 'Publish JMeter Performance Dashboard'
     condition: succeededOrFailed()

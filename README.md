@@ -32,9 +32,6 @@ From the root directory, install all functional testing libraries:
 npm install
 npx playwright install --with-deps
 
-```
-
----
 
 ## 🧪 Running Functional Tests (Playwright)
 

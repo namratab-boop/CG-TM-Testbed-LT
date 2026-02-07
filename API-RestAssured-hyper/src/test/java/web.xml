@@ -1,11 +1,11 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="Web Suite">
+<suite name="Web_Suite">
     <test name="Chrome Test">
         <parameter name="browser" value="Chrome"/>
         <parameter name="version" value="latest"/>
         <parameter name="platform" value="Windows 10"/>
         <classes>
-            <class name="webtest" />
+            <class name="apitestingsample" />
         </classes>
     </test>
 </suite>
