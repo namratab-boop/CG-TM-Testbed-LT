@@ -2,12 +2,12 @@
 <testng-results ignored="0" total="0" passed="0" failed="0" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2026-02-07T16:39:31 IST" name="Mobile" finished-at="2026-02-07T16:39:31 IST" duration-ms="51">
+  <suite started-at="2026-02-08T20:26:06 IST" name="Mobile" finished-at="2026-02-08T20:26:07 IST" duration-ms="230">
     <groups>
     </groups>
-    <test started-at="2026-02-07T16:39:31 IST" name="AndroidAppTest_1" finished-at="2026-02-07T16:39:31 IST" duration-ms="11">
+    <test started-at="2026-02-08T20:26:06 IST" name="AndroidAppTest_1" finished-at="2026-02-08T20:26:06 IST" duration-ms="27">
     </test> <!-- AndroidAppTest_1 -->
-    <test started-at="2026-02-07T16:39:31 IST" name="AndroidAppTest_2" finished-at="2026-02-07T16:39:31 IST" duration-ms="0">
+    <test started-at="2026-02-08T20:26:07 IST" name="AndroidAppTest_2" finished-at="2026-02-08T20:26:07 IST" duration-ms="2">
     </test> <!-- AndroidAppTest_2 -->
   </suite> <!-- Mobile -->
 </testng-results>

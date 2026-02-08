@@ -26,6 +26,12 @@ framework:
   discoveryType: xmltest
   flags: ["-Pios-parallel-realdevice"]
 
+report: true
+partialReports:
+  location: reports
+  type: html
+  frameworkName: allure
+
 jobLabel: ['HYP-RD', 'iOS', 'Multiple Device']
 
 uploadArtefacts:

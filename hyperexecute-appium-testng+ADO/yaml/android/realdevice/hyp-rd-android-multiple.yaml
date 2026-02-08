@@ -26,4 +26,9 @@ framework:
   discoveryType: xmltest
   flags: ["-Pandroid-parallel-realdevice"]
 
+report: true
+partialReports:
+  location: reports
+  type: html
+  frameworkName: allure
 jobLabel: ['HYP-RD', 'Android', 'Multiple Device']

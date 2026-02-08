@@ -213,6 +213,62 @@ For more information, visit:
 
 ---
 
+## For Allure Report
+
+Allure Dependencies (pom.xml)
+
+<dependency>
+    <groupId>io.qameta.allure</groupId>
+    <artifactId>allure-testng</artifactId>
+    <version>2.25.0</version>
+</dependency>
+
+<dependency>
+    <groupId>io.qameta.allure</groupId>
+    <artifactId>allure-java-commons</artifactId>
+    <version>2.25.0</version>
+</dependency>
+
+Allure Results Configuration
+
+Allure results are generated under:
+
+reports/allure-results
+
+
+Configured in Maven Surefire:
+
+<systemPropertyVariables>
+    <allure.results.directory>
+        reports/allure-results
+    </allure.results.directory>
+</systemPropertyVariables>
+
+
+This configuration supports parallel execution safely.
+
+🚀 HyperExecute Allure Report Configuration
+
+The following report configuration has been added to all HyperExecute YAML files:
+
+report: true
+partialReports:
+  location: reports
+  type: html
+  frameworkName: allure
+
+What this does:
+
+Enables report generation in HyperExecute
+
+Collects Allure results from the reports directory
+
+Generates HTML Allure reports
+
+Makes reports available in the HyperExecute dashboard
+
+
+
 ## About LambdaTest
 
 [LambdaTest](https://www.lambdatest.com) is a leading test execution and orchestration platform that is fast, reliable, scalable, and secure. It allows users to run both manual and automated testing of web and mobile apps across 3000+ different browsers, operating systems, and real device combinations. Over 500 enterprises and 1 Million+ users across 130+ countries rely on LambdaTest for their testing needs.

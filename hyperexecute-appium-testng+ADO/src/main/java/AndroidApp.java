@@ -1,11 +1,19 @@
 import java.net.URL;
 
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
+import io.qameta.allure.*;
+import io.qameta.allure.testng.AllureTestNg;
 
+@Listeners({ AllureTestNg.class })
+@Epic("Mobile Automation")
+@Feature("Android App - LambdaTest Proverbial")
 public class AndroidApp {
 
     public static String userName = System.getenv("LT_USERNAME");
@@ -15,11 +23,15 @@ public class AndroidApp {
 
     AppiumDriver driver;
 
+    @Severity(SeverityLevel.CRITICAL)
+    @Story("Verify Proverbial App End-to-End Flow")
     @Test
     @org.testng.annotations.Parameters(value = { "device", "version", "platform" })
     public void AndroidApp1(String device, String version, String platform) {
-        // version = System.getProperty("platformVersion");
+
         try {
+            Allure.step("Setting desired capabilities");
+
             DesiredCapabilities capabilities = new DesiredCapabilities();
             capabilities.setCapability("build", "Java TestNG Android 1");
             capabilities.setCapability("name", platform + " " + device + " " + version);
@@ -27,8 +39,7 @@ public class AndroidApp {
             capabilities.setCapability("platformVersion", version);
             capabilities.setCapability("platformName", platform);
             capabilities.setCapability("isRealMobile", true);
-            // AppURL (Create from Wikipedia.apk sample in project) Enter your app url
-            capabilities.setCapability("app", "lt://APP10160622431766424164986229"); // Enter your app url
+            capabilities.setCapability("app", "lt://APP10160622431766424164986229");
             capabilities.setCapability("deviceOrientation", "PORTRAIT");
             capabilities.setCapability("console", true);
             capabilities.setCapability("network", false);
@@ -39,70 +50,70 @@ public class AndroidApp {
             String hub = "https://" + userName + ":" + accessKey + gridURL;
             driver = new AppiumDriver(new URL(hub), capabilities);
 
-            MobileElement color = (MobileElement) driver.findElementById("com.lambdatest.proverbial:id/color");
-            // Changes color to pink
-            color.click();
+            Allure.step("App launched successfully");
+
+            clickById("com.lambdatest.proverbial:id/color", "Click color button");
             Thread.sleep(1000);
-            // Back to orginal color
-            color.click();
+            clickById("com.lambdatest.proverbial:id/color", "Reset color");
 
-            MobileElement text = (MobileElement) driver.findElementById("com.lambdatest.proverbial:id/Text");
-            // Changes the text to "Proverbial"
-            text.click();
-
-            // toast will be visible
-            MobileElement toast = (MobileElement) driver.findElementById("com.lambdatest.proverbial:id/toast");
-            toast.click();
-
-            // notification will be visible
-            MobileElement notification = (MobileElement) driver
-                    .findElementById("com.lambdatest.proverbial:id/notification");
-            notification.click();
+            clickById("com.lambdatest.proverbial:id/Text", "Click text button");
+            clickById("com.lambdatest.proverbial:id/toast", "Show toast message");
+            clickById("com.lambdatest.proverbial:id/notification", "Show notification");
             Thread.sleep(2000);
 
-            // Opens the geolocation page
-            MobileElement geo = (MobileElement) driver.findElementById("com.lambdatest.proverbial:id/geoLocation");
-            geo.click();
+            clickById("com.lambdatest.proverbial:id/geoLocation", "Open geolocation page");
             Thread.sleep(5000);
 
-            // takes back to home page
-            MobileElement home = (MobileElement) driver.findElementByAccessibilityId("Home");
-            home.click();
+            clickByAccessibilityId("Home", "Navigate back to Home");
 
-            // Takes to speed test page
-            MobileElement speedtest = (MobileElement) driver.findElementById("//*[@resource-id="com.lambdatest.proverbial:id/geoLocation"]");
-            speedtest.click();
+            clickById("com.lambdatest.proverbial:id/geoLocation", "Open speed test");
             Thread.sleep(5000);
 
-            MobileElement Home = (MobileElement) driver.findElementByAccessibilityId("Home");
-            Home.click();
+            clickByAccessibilityId("Home", "Navigate back to Home");
 
-            // Opens the browser
-            MobileElement browser = (MobileElement) driver.findElementByAccessibilityId("Browser");
-            browser.click();
+            clickByAccessibilityId("Browser", "Open browser");
 
+            Allure.step("Entering URL in browser");
             MobileElement url = (MobileElement) driver.findElementById("com.lambdatest.proverbial:id/url");
             url.sendKeys("https://www.lambdatest.com");
 
-            MobileElement find = (MobileElement) driver.findElementById("com.lambdatest.proverbial:id/find");
-            find.click();
+            clickById("com.lambdatest.proverbial:id/find", "Click Find button");
 
-            // Mark test as passed
+            Allure.step("Marking test as PASSED on LambdaTest");
             driver.executeScript("lambda-status=passed");
-            driver.quit();
 
         } catch (Exception e) {
+            Allure.step("Test failed due to exception: " + e.getMessage());
+            attachScreenshot();
             e.printStackTrace();
+
             try {
+                if (driver != null) {
+                    driver.executeScript("lambda-status=failed");
+                }
+            } catch (Exception ignored) {}
+
+        } finally {
             if (driver != null) {
-            // Mark test as failed
-            driver.executeScript("lambda-status=failed");
-            driver.quit();
-        }
-            } catch (Exception e1) {
-                e.printStackTrace();
+                driver.quit();
             }
         }
+    }
 
+    /* ------------------ Helper Methods with Allure Steps ------------------ */
+
+    @Step("{stepDescription}")
+    public void clickById(String id, String stepDescription) {
+        driver.findElementById(id).click();
+    }
+
+    @Step("{stepDescription}")
+    public void clickByAccessibilityId(String accId, String stepDescription) {
+        driver.findElementByAccessibilityId(accId).click();
+    }
+
+    @Attachment(value = "Failure Screenshot", type = "image/png")
+    public byte[] attachScreenshot() {
+        return ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
     }
 }

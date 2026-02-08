@@ -20,7 +20,11 @@ framework:
     flags: ["-Pandroid-single-emulator"]
 jobLabel: ['HYP', 'Single', 'AndroidEmulator']
 
-
+report: true
+partialReports:
+  location: reports
+  type: html
+  frameworkName: allure
 uploadArtefacts:
 
   - name: FinalReport 

@@ -28,3 +28,9 @@ framework:
     discoveryType: xmltest
     flags: ["-Pios-single-simulator"]
 jobLabel: ['HYP', 'iOS-Simulator', 'Single']
+
+report: true
+partialReports:
+  location: reports
+  type: html
+  frameworkName: allure

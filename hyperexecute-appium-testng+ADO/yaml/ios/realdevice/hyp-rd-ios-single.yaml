@@ -28,6 +28,13 @@ framework:
 
 jobLabel: ['HYP-RD', 'iOS', 'Single Device']
 
+
+report: true
+partialReports:
+  location: reports
+  type: html
+  frameworkName: allure
+
 uploadArtefacts:
 
   - name: FinalReport 

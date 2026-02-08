@@ -63,6 +63,20 @@
             <scope>compile</scope>
         </dependency>
 
+        <!-- Allure TestNG -->
+<dependency>
+    <groupId>io.qameta.allure</groupId>
+    <artifactId>allure-testng</artifactId>
+    <version>2.25.0</version>
+</dependency>
+
+<!-- Allure Java Commons -->
+<dependency>
+    <groupId>io.qameta.allure</groupId>
+    <artifactId>allure-java-commons</artifactId>
+    <version>2.25.0</version>
+</dependency>
+
     </dependencies>
     <build>
         <plugins>
@@ -99,6 +113,11 @@
                             <suiteXmlFiles>
                                 <suiteXmlFile>src/test/java/android/Realdevice/android-single.xml</suiteXmlFile>
                             </suiteXmlFiles>
+<systemPropertyVariables>
+                    <allure.results.directory>
+                        reports/allure-results
+                    </allure.results.directory>
+                </systemPropertyVariables>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -116,33 +135,17 @@
                             <suiteXmlFiles>
                                 <suiteXmlFile>src/test/java/android/Realdevice/android-parallel.xml</suiteXmlFile>
                             </suiteXmlFiles>
+<systemPropertyVariables>
+                    <allure.results.directory>
+                        reports/allure-results
+                    </allure.results.directory>
+                </systemPropertyVariables>
                         </configuration>
                     </plugin>
                 </plugins>
             </build>
         </profile>
-        <profile>
-            <id>hyperexecute-hybrid-realdevice</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <configuration>
-                            <suiteXmlFiles>
-                                <suiteXmlFile>src/test/java/${os}/Realdevice/${os}-parallel.xml</suiteXmlFile>
-                            </suiteXmlFiles>
-                            <properties>
-                            <property>
-                                <name>testnames</name>
-                                <value>${selectedTests}</value>
-                            </property>
-                            </properties>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
+        
 
         <profile>
             <id>ios-single-realdevice</id>
@@ -155,6 +158,11 @@
                             <suiteXmlFiles>
                                 <suiteXmlFile>src/test/java/ios/RealDevice/ios-single.xml</suiteXmlFile>
                             </suiteXmlFiles>
+<systemPropertyVariables>
+                    <allure.results.directory>
+                        reports/allure-results
+                    </allure.results.directory>
+                </systemPropertyVariables>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -171,6 +179,11 @@
                             <suiteXmlFiles>
                                 <suiteXmlFile>src/test/java/ios/RealDevice/ios-parallel.xml</suiteXmlFile>
                             </suiteXmlFiles>
+<systemPropertyVariables>
+                    <allure.results.directory>
+                        reports/allure-results
+                    </allure.results.directory>
+                </systemPropertyVariables>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -187,6 +200,11 @@
                             <suiteXmlFiles>
                                 <suiteXmlFile>src/test/java/android/emulator/android-single-Emulator.xml</suiteXmlFile>
                             </suiteXmlFiles>
+<systemPropertyVariables>
+                    <allure.results.directory>
+                        reports/allure-results
+                    </allure.results.directory>
+                </systemPropertyVariables>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -204,6 +222,11 @@
                             <suiteXmlFiles>
                                 <suiteXmlFile>src/test/java/android/emulator/android-parallel-Emulator.xml</suiteXmlFile>
                             </suiteXmlFiles>
+<systemPropertyVariables>
+                    <allure.results.directory>
+                        reports/allure-results
+                    </allure.results.directory>
+                </systemPropertyVariables>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -222,6 +245,11 @@
                             <suiteXmlFiles>
                                 <suiteXmlFile>src/test/java/ios/Simulator/ios-single-simulator.xml</suiteXmlFile>
                             </suiteXmlFiles>
+<systemPropertyVariables>
+                    <allure.results.directory>
+                        reports/allure-results
+                    </allure.results.directory>
+                </systemPropertyVariables>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -239,6 +267,11 @@
                             <suiteXmlFiles>
                                 <suiteXmlFile>src/test/java/android/emulator/android-parallel-Emulator.xml</suiteXmlFile>
                             </suiteXmlFiles>
+<systemPropertyVariables>
+                    <allure.results.directory>
+                        reports/allure-results
+                    </allure.results.directory>
+                </systemPropertyVariables>
                         </configuration>
                     </plugin>
                 </plugins>
