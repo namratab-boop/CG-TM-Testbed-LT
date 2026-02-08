@@ -3,18 +3,18 @@
 <suite thread-count="100" name="Mobile" parallel="tests">
 
     <test name="AndroidEmulatorTest_1">
-        <parameter name="platformVersion" value="11" />
+        <parameter name="platformVersion" value="13" />
         <parameter name="os" value="Android" />
-        <parameter name="deviceName" value="Galaxy .*" />
+        <parameter name="deviceName" value="Galaxy S23" />
         <classes>
             <class name="AndroidEmulator" />
         </classes>
     </test>
 
     <test name="AndroidEmulatorTest_2">
-        <parameter name="platformVersion" value="16" />
+        <parameter name="platformVersion" value="15" />
         <parameter name="os" value="Android" />
-        <parameter name="deviceName" value="Galaxy .*" />
+        <parameter name="deviceName" value="Galaxy S25 Plus" />
         <classes>
             <class name="AndroidEmulator" />
         </classes>
