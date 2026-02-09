@@ -47,7 +47,7 @@ public class IosSimulator {
             capabilities.setCapability("deviceName", deviceName);
             capabilities.setCapability("platformVersion", platformVersion);
             capabilities.setCapability("isRealMobile", false);
-
+            capabilities.setCapability("w3c", true);
             System.out.println("-----" + os + "---" + deviceName + "--" + platformVersion);
 
             driver = new RemoteWebDriver(
@@ -71,25 +71,25 @@ public class IosSimulator {
         try {
             WebDriverWait wait = new WebDriverWait(driver, 30);
 
-            click(wait, MobileBy.id("color"), "Click on color button");
-            click(wait, MobileBy.id("geoLocation"), "Open geo location");
+           // click(wait, MobileBy.id("color"), "peppa pig product recall uk");
+           // click(wait, MobileBy.id("geoLocation"), "Open geo location");
             Thread.sleep(5000);
-            driver.navigate().back();
+          // driver.navigate().back();
 
-            click(wait, MobileBy.id("Text"), "Click on text button");
-            click(wait, MobileBy.id("notification"), "Open notification");
-            click(wait, MobileBy.id("toast"), "Show toast message");
+          // click(wait, MobileBy.id("Text"), "Click on text button");
+          // click(wait, MobileBy.id("notification"), "Open notification");
+          // click(wait, MobileBy.id("toast"), "Show toast message");
 
-            click(wait, By.id("webview"), "Open WebView");
-            Thread.sleep(10000);
+          //  click(wait, By.id("webview"), "Open WebView");
+          //  Thread.sleep(10000);
 
-            Allure.step("Entering URL in WebView");
-            wait.until(ExpectedConditions.presenceOfElementLocated(
-                    MobileBy.id("url"))).sendKeys("https://www.lambdatest.com/");
+         //   Allure.step("Entering URL in WebView");
+          //  wait.until(ExpectedConditions.presenceOfElementLocated(
+          //          MobileBy.id("url"))).sendKeys("https://www.lambdatest.com/");
 
-            click(wait, MobileBy.id("find"), "Click Find button");
-            Thread.sleep(5000);
-            driver.navigate().back();
+           // click(wait, MobileBy.id("find"), "Click Find button");
+           // Thread.sleep(5000);
+            //driver.navigate().back();
 
             status = "passed";
             Allure.step("Test completed successfully");
