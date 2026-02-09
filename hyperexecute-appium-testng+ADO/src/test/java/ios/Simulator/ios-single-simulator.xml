@@ -6,7 +6,7 @@
     <test name="iOSApp_1">
         <parameter name="os" value="ios" />
         <parameter name="deviceName" value="iPhone 8" />
-        <parameter name="platformVersion" value="15.0" />
+        <parameter name="platformVersion" value="15" />
         <classes>
             <class name="IosSimulator" />
         </classes>
